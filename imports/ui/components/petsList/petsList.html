@@ -1,0 +1,84 @@
+<div layout-padding>
+  <div layout="row" layout-align="space-around">
+    <md-radio-group ng-model="petsList.search.status" layout="row" layout-align="space-around" layout-wrap>
+      <md-radio-button value="started" class="md-primary">Current</md-radio-button>
+      <md-radio-button value="completed"> Completed</md-radio-button>
+      <md-radio-button value="queued"> Scheduled</md-radio-button>
+      <md-radio-button value="deleted"> Deleted</md-radio-button>
+    </md-radio-group>
+  </div>
+  <div layout="row" layout-align="space-between center" style="padding: 0px; height: 20px;">
+    <h3><i class="fas fa-user"></i> {{petsList.count.clientsCount}}</h3>
+    <h3 ng-if="petsList.search.status === 'completed'" style="color: green"><i class="fas fa-user"></i> {{petsList.countCompleted.clientsCount}}</h3>
+    <h3 ng-if="petsList.search.status === 'completed'" style="color: green"><i class="fas fa-paw"></i> {{petsList.countCompleted.petsCount}}</h3>
+    <h3><i class="fas fa-paw"></i> {{petsList.count.petsCount}}</h3>
+  </div>
+  <div layout="column" layout-padding ng-if="petsList.search.status === 'started'" style="margin: 0; padding: 0">
+    <div layout="row" layout-align="space-between">
+      <h4>Priority Queue: {{petsList.startSlot.format('HH:mm')}}-{{petsList.endSlot.format('HH:mm')}}</h4>
+    </div>
+  </div>
+  <div layout="column" layout-padding ng-repeat="pet in petsList.petsQueued" ng-if="petsList.search.status === 'started'">
+    <md-card ui-sref="petDetails({ petId: pet._id })" md-ripple ng-if="pet.slotTime.isBefore(petsList.startSlot)">
+      <div layout="row" layout-align="space-between">
+        <div layout="row">
+          <p style='font-weight: bold'>{{pet.owner.firstName}} {{pet.owner.lastName}}<span style="color:red"> (Overdue)</span></p>
+        </div>
+        <div layout="row" ng-if="pet.status === 'queued'">
+          <p style="color:red">
+            Time - {{pet.slotTime.format('HH:mm')}}
+          </p>
+        </div>
+        <pet-remove pet="pet" ng-click="$event.stopPropagation()" ng-if="pet.status === 'started'"></pet-remove>
+      </div>
+      <ul style="list-style-type: square">
+        <li ng-repeat="dog in pet.dogs">
+          <p>{{dog.name}}</p>
+        </li>
+      </ul>
+    </md-card>
+  </div>
+  <div layout="column" layout-padding ng-repeat="pet in petsList.petsQueued" ng-if="petsList.search.status === 'started'">
+    <md-card ui-sref="petDetails({ petId: pet._id })" md-ripple ng-if="(pet.slotTime.isAfter(petsList.startSlot) && pet.slotTime.isBefore(petsList.endSlot)) || pet.slotTime.format('HH:mm') === petsList.startSlot.format('HH:mm') || pet.slotTime.format('HH:mm') === petsList.endSlot.format('HH:mm')">
+      <div layout="row" layout-align="space-between">
+        <div layout="row">
+          <p style='font-weight: bold'>{{pet.owner.firstName}} {{pet.owner.lastName}}</p>
+        </div>
+        <div layout="row" ng-if="pet.status === 'queued'">
+          <p>
+            Time - {{pet.slotTime.format('HH:mm')}}
+          </p>
+        </div>
+        <pet-remove pet="pet" ng-click="$event.stopPropagation()" ng-if="pet.status === 'started'"></pet-remove>
+      </div>
+      <ul style="list-style-type: square">
+        <li ng-repeat="dog in pet.dogs">
+          <p>{{dog.name}}</p>
+        </li>
+      </ul>
+    </md-card>
+  </div>
+  <div layout="column" layout-padding ng-if="petsList.search.status === 'started'" style="margin: 0; padding: 0">
+    <h4>Queue</h4>
+  </div>
+  <div layout="column" layout-padding ng-repeat="pet in petsList.pets | filter:petsList.search" style="margin: 0; padding: 0">
+    <md-card ui-sref="petDetails({ petId: pet._id })" md-ripple>
+      <div layout="row" layout-align="space-between">
+        <div layout="row" style="height: 1em; margin: 0">
+          <p style='height: 1em; margin: 0; font-weight: bold'>{{pet.owner.firstName}} {{pet.owner.lastName}}</p>
+        </div>
+        <div layout="row" ng-if="pet.status === 'queued'">
+          <p>
+            Time - {{pet.slotTime | date:'HH:mm'}}
+          </p>
+        </div>
+        <pet-remove style="height: 1em; margin: 0" pet="pet" ng-click="$event.stopPropagation()" ng-if="pet.status === 'started'"></pet-remove>
+      </div>
+      <ul style="list-style-type: square; margin: 0;">
+        <li ng-repeat="dog in pet.dogs" style="margin: 0;">
+          <p style="margin: 0;">{{dog.name}}</p>
+        </li>
+      </ul>
+    </md-card>
+  </div>
+</div>

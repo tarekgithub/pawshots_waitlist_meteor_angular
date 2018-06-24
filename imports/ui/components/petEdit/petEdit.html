@@ -1,0 +1,132 @@
+<md-content layout="row" layout-align="center start" layout-fill layout-margin>
+ <md-whiteframe layout="column" flex class="md-whiteframe-z2" layout-fill style="background-color:white;">
+
+  <form novalidate layout-padding>
+    <div flex layout="row" layout-align="space-between">
+      <md-button ui-sref="pets">Back</md-button>
+    </div>
+
+    <div ng-show="petEdit.error">
+      <h3>{{petEdit.error}}</h3>
+    </div>
+
+    <div layout-gt-xs="row" layout="column">
+      <div layout="column" flex="50">
+          <div layout-gt-xs="row" layout="column">
+            <md-input-container flex>
+              <label>
+                First Name
+              </label>
+              <input type="text" name="firstName" ng-model="petEdit.pet.owner.firstName" required minlength="2" maxlength="30">
+            </md-input-container>
+            <md-input-container flex>
+              <label>
+                Last Name
+              </label>
+              <input type="text" name="lastName" ng-model="petEdit.pet.owner.lastName" required minlength="2" maxlength="30">
+            </md-input-container>
+          </div>
+
+          <md-input-container md-no-float>
+            <label>
+              Phone
+            </label>
+            <input ng-model="petEdit.pet.owner.phone" type="tel" name="phone"
+                       minlength="3" maxlength="30"/>
+          </md-input-container>
+          <md-input-container md-no-float>
+            <label>
+              Email
+            </label>
+            <input ng-model="petEdit.pet.owner.email" type="email" name="email"
+                       minlength="3" maxlength="30" ng-pattern="/^.+@.+\..+$/" />
+          </md-input-container>
+
+          <p>
+            <strong>Dog's Name List: </strong>
+          </p>
+
+          <ul>
+            <li ng-repeat="dog in petEdit.pet.dogs">
+              <div layout="row" layout-align="space-around">
+                <span >{{$index+1}}.</span>
+                <md-input-container>
+                  <label>
+                    Dog's Name
+                  </label>
+                  <input type="text" name="dog{{$index}}" ng-model="dog.name" required minlength="2" maxlength="30" />
+                  <div ng-messages="regForm['dog' + $index].$error" role="alert">
+                    <div ng-message-exp="['required', 'minlength', 'maxlength']">
+                      Please enter a valid value.
+                    </div>
+                  </div>
+                </md-input-container>
+                <md-input-container>
+                  <label>
+                    Image Number
+                  </label>
+                  <input type="tel" ng-model="dog.imageNumber">
+                </md-input-container>
+                <!-- to delete a dog -->
+                <md-button class="md-icon-button" ng-click="petEdit.deleteDog(dog)">
+                  <md-icon md-svg-icon="content:ic_clear_24px"></md-icon>
+                  <md-tooltip md-direction="right">
+                    Delete
+                  </md-tooltip>
+                </md-button>
+              </div>
+            </li>
+          </ul>
+
+          <!-- to add additional dog -->
+          <div flex>
+            <md-button class="md-raised" ng-click="petEdit.addDog()">Add Additional Dog</md-button>
+          </div>
+
+          <md-input-container md-no-float>
+            <label>
+              Notes
+            </label>
+            <textarea ng-model="petEdit.pet.notes" type="textarea" name="notes">
+            </textarea>
+          </md-input-container>
+          <md-input-container md-no-float ng-if="petEdit.pet.status === 'queued'">
+            <label>
+              Schedule Slot Time
+            </label>
+            <input ng-model="petEdit.pet.slotTime" type="time" name="slotTime">
+          </md-input-container>
+      </div>
+
+      <div flex>
+      </div>
+
+      <div layout="column" flex="30" layout-padding>
+        <p>Payment Status: <span class="radioValue">{{ petEdit.pet.paymentStatus }}</span> </p>
+        <md-radio-group ng-model="petEdit.pet.paymentStatus">
+          <md-radio-button value="not-paid" class="md-primary">Not Paid</md-radio-button>
+          <md-radio-button value="card"> Card </md-radio-button>
+          <md-radio-button value="cash">Cash</md-radio-button>
+        </md-radio-group>
+
+        <p>Client Status: </p>
+        <md-radio-group ng-model="petEdit.pet.status">
+          <md-radio-button value="started" class="md-primary">Not Completed</md-radio-button>
+          <md-radio-button value="queued">Schedule</md-radio-button>
+          <md-radio-button value="completed"> Completed</md-radio-button>
+          <md-radio-button value="deleted"> Deleted</md-radio-button>
+        </md-radio-group>
+
+        <p>
+          <strong>Total: </strong>
+          <label> ${{petEdit.pet.dogs.length * 10}}</label>
+        </p>
+      </div>
+    </div>
+
+    <div flex layout="row" layout-align="center">
+      <md-button class="md-raised md-primary" ng-click="petEdit.save($event)">Save</md-button>
+    </div>
+  </form>
+ </md-whiteframe>
+</md-content>

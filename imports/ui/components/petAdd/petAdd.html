@@ -1,0 +1,97 @@
+  <md-content layout="row" layout-align="center start" layout-fill layout-margin>
+    <md-whiteframe layout="column" flex flex-md="50" flex-lg="50" flex-gt-lg="33" class="md-whiteframe-z2" layout-fill style="background-color:white;">
+
+    <md-toolbar class="md-primary" layout="column" layout-align="end" layout-fill>
+       <div layout="row" class="md-toolbar-tools md-toolbar-tools-bottom" layout-align="space-between center">
+         <div>
+            <img src="https://s3-ap-southeast-2.amazonaws.com/pawshots/wp-content/uploads/2016/02/16090415/pawshots_logo_v4.png" alt="Pawshots Canberra Pet Photography" />
+         </div>
+        <h1 class="md-display-3">Registration</h1>
+       </div>
+    </md-toolbar>
+
+    <form name="regForm" ng-submit="petAdd.submit(regForm, $event)" novalidate layout-padding>
+      <div layout-gt-xs="row" layout="column" class="name" layout-fill layout-margin>
+        <md-input-container class="name" flex>
+          <label>
+            First Name
+          </label>
+          <input type="text" name="firstName" ng-model="petAdd.pet.owner.firstName" required minlength="2" maxlength="40">
+          <div ng-messages="regForm.firstName.$error" role="alert">
+            <div ng-message-exp="['required', 'minlength', 'maxlength']">
+              Please enter your first name.
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container class="name" flex>
+          <label>
+            Last Name
+          </label>
+          <input type="text" name="lastName" ng-model="petAdd.pet.owner.lastName" required minlength="2" maxlength="40">
+          <div ng-messages="regForm.lastName.$error" role="alert">
+            <div ng-message-exp="['required', 'minlength', 'maxlength']">
+              Please enter your last name.
+            </div>
+          </div>
+        </md-input-container>
+      </div>
+
+      <div flex layout="column">
+        <md-input-container>
+          <label>
+            Email
+          </label>
+          <input ng-model="petAdd.pet.owner.email" type="email" name="email"
+										 minlength="3" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+          <div ng-messages="regForm.email.$error" role="alert">
+             <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+               Please enter a valid email address.
+             </div>
+          </div>
+        </md-input-container>
+        <md-input-container>
+          <label>
+            Phone
+          </label>
+          <input type="tel" name="phone" ng-model="petAdd.pet.owner.phone" required minlength="5" maxlength="30" />
+          <div ng-messages="regForm.phone.$error" role="alert">
+            <div ng-message-exp="['required', 'minlength', 'maxlength']">
+              Please enter your phone number.
+            </div>
+          </div>
+        </md-input-container>
+
+        <div class="list-number" layout="row" ng-repeat="dog in petAdd.pet.dogs">
+          <md-input-container>
+            <label>
+               {{$index + 1}} Dog's Name
+            </label>
+            <input type="text" name="dog{{$index}}" ng-model="dog.name" required minlength="2" maxlength="30" />
+            <div ng-messages="regForm['dog' + $index].$error" role="alert">
+              <div ng-message-exp="['required', 'minlength', 'maxlength']">
+                Please enter your dogs name.
+              </div>
+            </div>
+          </md-input-container>
+          <!-- to delete a dog -->
+          <md-button class="md-icon-button" ng-click="petAdd.deleteDog(dog)">
+            <md-icon md-svg-icon="content:ic_clear_24px"></md-icon>
+            <md-tooltip md-direction="right">
+              Delete
+            </md-tooltip>
+          </md-button>
+        </div>
+      </div>
+
+      <!-- to add additional dog -->
+      <div flex>
+        <md-button style="text-transform: none;" class="md-raised" ng-click="petAdd.addDog()">Add Additional Photo</md-button>
+      </div>
+
+      <div flex layout="row" layout-align="center">
+        <md-button class="md-raised md-primary" type="submit">Submit (Total = ${{petAdd.pet.dogs.length * 10}})</md-button>
+      </div>
+
+    </form>
+  </md-whiteframe>
+</md-content>

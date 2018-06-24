@@ -1,0 +1,36 @@
+<md-content layout="row" layout-align="center start" layout-fill layout-margin>
+  <md-whiteframe layout="column" flex flex-md="50" flex-lg="50" flex-gt-lg="33" class="md-whiteframe-z2" layout-fill style="background-color:white;">
+
+  <md-toolbar class="md-primary md-tall" layout="column" layout-align="end" layout-fill>
+     <div layout="row" class="md-toolbar-tools md-toolbar-tools-bottom" layout-align="space-between center">
+       <div>
+          <img style="height: 45px;" src="https://s3-ap-southeast-2.amazonaws.com/pawshots/wp-content/uploads/2016/02/16090415/pawshots_logo_v4.png" alt="Pawshots Canberra Pet Photography" />
+       </div>
+      <h1 class="md-display-3">Sign in</h1>
+     </div>
+  </md-toolbar>
+
+  <form name="regForm" ng-submit="petAdd.submit(regForm, $event)" novalidate layout-padding>
+    <div flex layout="column">
+      <md-input-container>
+        <label>
+          Email
+        </label>
+        <input type="email" ng-model="login.credentials.email" aria-label="email" required/>
+      </md-input-container>
+      <md-input-container>
+        <label>
+          Password
+        </label>
+        <input type="password" ng-model="login.credentials.password" aria-label="password" required/>
+      </md-input-container>
+    </div>
+    <div flex>
+      <md-button class="md-raised md-primary" ng-click="login.login()" aria-label="login" ng-disabled="login.loginForm.$invalid()">Sign In</md-button>
+    </div>
+    <md-toolbar ng-show="login.error" class="md-warn" layout="row" layout-fill layout-padding layout-margin>
+      <p class="md-body-1">{{ login.error }}</p>
+    </md-toolbar>
+  </form>
+</md-whiteframe>
+</md-content>

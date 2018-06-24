@@ -1,0 +1,91 @@
+<md-content layout="row" layout-align="center start" layout-fill layout-margin>
+ <md-whiteframe layout="column" flex class="md-whiteframe-z2" layout-fill style="background-color:white;">
+
+  <form novalidate layout-padding>
+    <div flex layout="row" layout-align="space-between">
+      <md-button ui-sref="pets">Back</md-button>
+      <md-button ui-sref="petDetailsEdit({ petId: petDetails.pet._id })">Edit</md-button>
+    </div>
+
+    <div ng-show="petDetails.pet.status==='completed'">
+      <h3>Completed Client</h3>
+    </div>
+
+    <div id="error-message" ng-show="petDetails.error">
+      <h3>{{petDetails.error}}</h3>
+    </div>
+
+    <div layout-gt-xs="row" layout="column" layout-fill layout-margin>
+      <div layout="column" flex="50" layout-fill layout-margin>
+        <p class="name">
+          <strong>Name: </strong>
+          {{petDetails.pet.owner.firstName}}
+          {{petDetails.pet.owner.lastName}}
+        </p>
+
+        <p>
+          <strong>Phone: </strong>
+          {{petDetails.pet.owner.phone}}
+          <button class="clipboard-btn" ngclipboard-success="petDetails.onSuccess(e);" ngclipboard-error="petDetails.onError(e);" ngclipboard data-clipboard-text={{petDetails.pet.owner.phone}}>
+            <img class="clipboard-image" src="clippy.svg" alt="Copy to clipboard">
+          </button>
+        </p>
+
+        <p ng-if="petDetails.pet.owner.email">
+          <strong>Email: </strong>
+          {{petDetails.pet.owner.email}}
+        </p>
+        <p ng-if="!petDetails.pet.owner.email">
+          <strong>Email: </strong>
+            N/A
+        </p>
+
+        <p>
+          <strong>Dog's Name List: </strong>
+        </p>
+
+        <ul>
+          <li ng-repeat="dog in petDetails.pet.dogs">
+            <div layout="row" layout-align="space-around">
+              <span>{{$index+1}}. {{dog.name}}</span>
+              <md-input-container>
+                <label>
+                  Image Number
+                </label>
+                <input type="tel" ng-model="dog.imageNumber">
+              </md-input-container>
+            </div>
+          </li>
+        </ul>
+
+        <p>
+          <strong>Notes: </strong>
+          {{petDetails.pet.notes}}
+        </p>
+      </div>
+
+      <div flex>
+      </div>
+
+      <div layout="column" flex="30">
+        <p>Payment Status: <span class="radioValue">{{ petDetails.pet.paymentStatus }}</span> </p>
+        <md-radio-group ng-model="petDetails.pet.paymentStatus">
+          <md-radio-button value="not-paid" class="md-primary">Not Paid</md-radio-button>
+          <md-radio-button value="card"> Card </md-radio-button>
+          <md-radio-button value="cash">Cash</md-radio-button>
+        </md-radio-group>
+        <p>
+          <strong>Total: </strong>
+          <label> ${{petDetails.pet.dogs.length * 10}}</label>
+        </p>
+      </div>
+    </div>
+
+    <div flex layout="row" layout-align="center" ng-hide="petDetails.editDetails">
+      <md-button class="md-raised" ng-click="petDetails.save($event)">Save</md-button>
+      <md-button class="md-raised md-primary" ng-click="petDetails.done($event)">Done</md-button>
+    </div>
+
+  </form>
+ </md-whiteframe>
+</md-content>

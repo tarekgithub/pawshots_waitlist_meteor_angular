@@ -1,0 +1,11 @@
+<div layout="row" layout-align="center center">
+  <md-button flex ui-sref="login" ng-hide="auth.isLoggedIn">Login</md-button>
+  <!-- <md-button flex ui-sref="register" ng-hide="auth.isLoggedIn">Sign up</md-button> -->
+  <h2 md-ripple ng-show="auth.isLoggedIn">
+    <span ui-sref="pets">
+      List
+    </span>
+  </h2>
+  <md-button flex ng-click="auth.logout()" ng-show="auth.isLoggedIn">Logout</md-button>
+  <div ng-show="auth.isLoggedIn" style="font-size:18px;">{{ auth.currentUser | displayNameFilter }}</div>
+</div>
